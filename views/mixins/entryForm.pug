@@ -1,0 +1,12 @@
+mixin entryForm(entry = {})
+  form(action="/entries" method="POST")
+    label(for="title") Title
+    input(type="text" name="title" value=entry.title)
+    label(for="photo") Photo
+    input(type="file" name="photo" id="photo" accept="image/png, image/gif, image/jpeg")
+    label(for="description") Description
+    textarea(name="description")= entry.description
+    
+    input(type="submit" value="save" class="button")
+    
+    

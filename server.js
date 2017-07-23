@@ -7,6 +7,9 @@ mongoose.connection.on('error', (err) => {
   console.error('You have encountered an error!');
 });
 
+require('./models/Entry');
+
+
 const app = require('./app');
 app.set('port', process.env.PORT);
 const server = app.listen(3000, () => {

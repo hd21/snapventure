@@ -1,0 +1,8 @@
+extends layout
+
+include mixins/entryForm
+
+block content
+  .inner
+    h2 #{title}
+  +entryForm(entry)

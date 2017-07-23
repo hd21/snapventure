@@ -1,9 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+const entryController = require('../controllers/entryController');
+
+const { findErrors } = require('../handlers/errorHandlers');
+
+router.get('/', entryController.home);
+
+router.get('/entries', entryController.addEntry);
+router.post('/entries', findErrors(entryController.createEntry));
 
 module.exports = router;

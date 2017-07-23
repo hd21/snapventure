@@ -1,3 +1,9 @@
+exports.findErrors = (fn) => {
+  return function(req, res, next) {
+    return fn(req, res, next).catch(next);
+  };
+};
+
 // catch 404 and forward to error handler
 exports.notFound = (req, res, next) => {
   const err = new Error('Not Found');
