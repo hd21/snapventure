@@ -2,16 +2,44 @@ const mongoose = require('mongoose');
 require('dotenv').config({ path: 'variables.env' });
 mongoose.Promise = global.Promise;
 
-mongoose.connect(process.env.DATABASE_URL, { useMongoClient: true });
-mongoose.connection.on('error', (err) => {
-  console.error('You have encountered an error!');
-});
-
 require('./models/Entry');
 
-
 const app = require('./app');
-app.set('port', process.env.PORT);
-const server = app.listen(3000, () => {
-  console.log(`Listening on PORT ${server.address().port}`);
-});
+
+let server;
+
+ const runServer = (databaseUrl = process.env.DATABASE_URL, port = process.env.PORT) => {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(databaseUrl, err => {
+            if (err) {
+                return reject(err);
+            }
+            server = app.listen(port, () => {
+                    console.log(`Your app is now listening on PORT ${port}.`);
+                    resolve();
+                })
+                .on('error', err => {
+                    mongoose.disconnect();
+                    reject(err);
+                });
+        });
+    });
+}
+
+const closeServer= () => {
+    return mongoose.disconnect().then(() => {
+        return new Promise((resolve, reject) => {
+            console.log('Closing server');
+            server.close(err => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve();
+            });
+        });
+    });
+}
+
+if (require.main === module) {
+    runServer().catch(err => console.error(err));
+}
