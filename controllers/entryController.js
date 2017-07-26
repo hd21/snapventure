@@ -8,8 +8,22 @@ exports.home = (req,res) => {
   res.render('home', { title: 'Express' });
 };
 
-exports.dashboard = (req, res) => {
-  res.render('dashboard');
+exports.dashboard = async (req, res) => {
+  const mainPage = req.params.page || 1;
+  const limit = 10;
+  const skip = (mainPage * limit) - limit;
+  const entriesPromise = Entry
+    .find()
+    .skip(skip)
+    .limit(limit)
+    .sort({ created: 'desc' });
+
+  const countPromise = Entry.count();
+
+  const [ entries, count ] = await Promise.all([entriesPromise, countPromise]);
+  const pages = Math.ceil( count / limit );
+
+  res.render('dashboard', { title: 'Dashboard', entries, mainPage, count, pages });
 };
 
 exports.addEntry = (req, res) => {
