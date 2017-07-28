@@ -8,6 +8,8 @@ const { findErrors } = require('../handlers/errorHandlers');
 router.get('/', entryController.home);
 router.get('/dashboard', entryController.dashboard);
 
+router.get('/dashboard/page/:page', findErrors(entryController.dashboard));
+
 router.get('/entries', entryController.addEntry);
 router.post('/entries', findErrors(entryController.createEntry));
 

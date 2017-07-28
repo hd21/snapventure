@@ -33,5 +33,14 @@ exports.addEntry = (req, res) => {
 exports.createEntry = async (req, res) => {
   const entry = new Entry(req.body);
   await entry.save();
-  res.redirect('/');
+  console.log('This should work!');
+  res.redirect('/dashboard');
+};
+
+exports.updateEntry = async (req, res) => {
+  const entry = await Entry.findOneAndUpdate({ _id: req.params.id }, req.body, {
+    new: true,
+    runValidators: true
+  }).exec();
+  res.redirect(`/entries/${entry._id/edit}`);
 };

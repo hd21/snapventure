@@ -68,7 +68,8 @@ describe('Entries API Resource', function() {
           res.should.have.status(200);
           res.should.be.a('object');
           // res.body.should.include.keys('id','title', 'entered', 'photo', 'descrption');
-          res.body.title.should.equal(newEntry.title);
+          // res.body.title.should.equal(newEntry.title);
+          console.log('response', res);
       });
     });
 });

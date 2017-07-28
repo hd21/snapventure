@@ -1,5 +1,9 @@
 extends layout
 
+include mixins/createEntry
+
 block content
   h1= title
-  p Welcome to #{title}
+    each entry in entries
+      +createEntry(entry)
+  
