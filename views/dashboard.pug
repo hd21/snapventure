@@ -4,6 +4,9 @@ include mixins/createEntry
 
 block content
   h1= title
+  a(href="/new") Add an Entry
+  span
     each entry in entries
       +createEntry(entry)
+  
   

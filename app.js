@@ -18,6 +18,11 @@ const errorHandlers = require('./handlers/errorHandlers');
 // creates express app
 const app = express();
 
+app.use(cookieParser());
+// Takes requests and enables them to be usable in req.body
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 // Documenting requests with Morgan
 app.use(logger('dev'));
 
@@ -29,13 +34,7 @@ app.set('view engine', 'pug');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Takes requests and enables them to be usable in req.body
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(expressValidator());
-
-app.use(cookieParser());
 
 app.use(session({
   secret: process.env.SECRET,

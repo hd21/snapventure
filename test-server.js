@@ -6,9 +6,9 @@ require('./models/Entry');
 
 const app = require('./app');
 
- const runServer = (databaseUrl = process.env.DATABASE_URL, port = process.env.PORT) => {
+ const runTestServer = (testDatabaseUrl = process.env.TEST_DATABASE_URL, port = process.env.PORT) => {
     return new Promise((resolve, reject) => {
-        mongoose.connect(databaseUrl, err => {
+        mongoose.connect(testDatabaseUrl, err => {
             if (err) {
                 return reject(err);
             }
@@ -24,10 +24,10 @@ const app = require('./app');
     });
 }
 
-const closeServer= () => {
+const closeTestServer= () => {
     return mongoose.disconnect().then(() => {
         return new Promise((resolve, reject) => {
-            console.log('Closing server');
+            console.log('Closing test server');
             server.close(err => {
                 if (err) {
                     return reject(err);
@@ -39,7 +39,7 @@ const closeServer= () => {
 }
 
 if (require.main === module) {
-    runServer().catch(err => console.error(err));
+    runTestServer().catch(err => console.error(err));
 };
 
-module.exports = { app, runServer, closeServer };
+module.exports = { app, runTestServer, closeTestServer };

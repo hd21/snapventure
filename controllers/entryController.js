@@ -5,7 +5,7 @@ const jimp = require('jimp');
 const uuid = require('uuid');
 
 exports.home = (req,res) => {
-  res.render('home', { title: 'Express' });
+  res.render('home', { title: 'Snapventure' });
 };
 
 exports.dashboard = async (req, res) => {
@@ -33,8 +33,8 @@ exports.addEntry = (req, res) => {
 exports.createEntry = async (req, res) => {
   const entry = new Entry(req.body);
   await entry.save();
-  console.log('This should work!');
-  res.redirect('/dashboard');
+  res.status(201).json(entry);
+  // res.redirect('/dashboard');
 };
 
 exports.updateEntry = async (req, res) => {
@@ -42,5 +42,6 @@ exports.updateEntry = async (req, res) => {
     new: true,
     runValidators: true
   }).exec();
-  res.redirect(`/entries/${entry._id/edit}`);
+  res.status(204).json(entry);
+  // res.redirect(`/new/${entry._id}`);
 };
