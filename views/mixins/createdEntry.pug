@@ -1,0 +1,12 @@
+mixin createdEntry(entry)
+
+  p Title: #{entry.title}
+  p Description: #{entry.description}
+  p Date posted: #{moment(entry.enteredAt).format("MM-DD-YYYY")}
+  p
+    a(href=`/entries/edit/${entry._id}`) Update Entry
+    
+  form(method="POST" action=`/entries/delete/${entry._id || ''}`)
+    div.form-group
+      input#entryid.form-control(type='hidden' name='entryid' required='true' value=entry._id)
+    button.btn.btn-primary(type='submit') Delete

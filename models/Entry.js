@@ -7,7 +7,7 @@ const entrySchema = new mongoose.Schema({
     trim: true,
     required: 'Please enter a title.'
   },
-  entered: {
+  enteredAt: {
     type: Date,
     default: Date.now
   },

@@ -20,8 +20,9 @@ const app = express();
 
 app.use(cookieParser());
 // Takes requests and enables them to be usable in req.body
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(expressValidator());
 
 // Documenting requests with Morgan
 app.use(logger('dev'));
@@ -33,8 +34,6 @@ app.set('view engine', 'pug');
 // For icon
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(expressValidator());
 
 app.use(session({
   secret: process.env.SECRET,
