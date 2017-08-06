@@ -11,6 +11,13 @@ exports.notFound = (req, res, next) => {
   next(err);
 };
 
+exports.flashValidationErrors = (err, req, res, next) => {
+  if (!err.errors) return next(err);
+  const errorKeys = Object.keys(err.errors);
+  errorKeys.forEach(key => req.flash('error', err.errors[key].message));
+  res.redirect('back');
+};
+
 // error handler
 exports.devError = (err, req, res, next) => {
   // set locals, only providing error in development

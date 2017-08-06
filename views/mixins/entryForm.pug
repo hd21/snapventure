@@ -1,6 +1,6 @@
 mixin entryForm(entry = {})
 
-  form(action=`/entries/edit/${entry._id || ''}` method="POST")
+  form(action=`/new/${entry._id || ''}` method="POST" enctype="multipart/form-data")
     div.form-group
       label(for="title") Title:
       input#title.form-control(type="text" name="title" value=entry.title)
@@ -8,6 +8,8 @@ mixin entryForm(entry = {})
     div.form-group
       label(for="photo") Photo
       input(type="file" name="photo" id="photo" accept="image/png, image/gif, image/jpeg")
+      if entry.photo
+        img(src=`/uploads/${entry.photo}` alt=entry.name width=200)
     
     div.form-group
       label(for="description") Description

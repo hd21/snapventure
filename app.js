@@ -12,8 +12,11 @@ const flash = require('connect-flash');
 const expressValidator = require('express-validator');
 const logger = require('morgan');
 
-const routes = require('./routes/index');
+const entryRoutes = require('./routes/index');
+const userRoutes = require('./routes/users');
+
 const errorHandlers = require('./handlers/errorHandlers');
+require('./handlers/passport');
 
 // creates express app
 const app = express();
@@ -46,12 +49,15 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(flash());
+
 app.use((req, res, next) => {
   req.login = promisify(req.login, req);
   next();
 });
 
-app.use('/', routes);
+app.use('/', entryRoutes);
+app.use('/', userRoutes);
 
 app.use(errorHandlers.notFound);
 app.use(errorHandlers.devError);

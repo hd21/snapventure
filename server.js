@@ -3,6 +3,7 @@ require('dotenv').config({ path: 'variables.env' });
 mongoose.Promise = global.Promise;
 
 require('./models/Entry');
+require('./models/User');
 
 const app = require('./app');
 

@@ -1,12 +1,24 @@
 const mongoose = require('mongoose');
 const Entry = mongoose.model('Entry');
 const moment = require('moment');
+const async = require('async');
 
 const multer = require('multer');
 const jimp = require('jimp');
 const uuid = require('uuid');
 
-const async = require('async');
+
+const multerOptions = {
+  storage: multer.memoryStorage(),
+  fileFilter(req, file, next){
+    const thePhoto = file.mimetype.startsWith('image/');
+    if (thePhoto) {
+      next(null, true);
+    } else {
+      next({ message: `Sorry, but that file type isn\'t allowed!` }, false);
+    }
+  }
+};
 
 exports.home = (req,res) => {
   res.render('home', { title: 'Snapventure' });
@@ -50,6 +62,21 @@ exports.createEntry_post = async (req, res) => {
   await entry.save();
   res.status(201);
   res.redirect('/entries');
+};
+
+exports.uploadPhoto = multer(multerOptions).single('photo');
+
+exports.resizePhoto = async (req, res, next) => {
+  if (!req.file) {
+    next();
+    return;
+  }
+  const extension = req.file.mimetype.split('/')[1];
+  req.body.photo = `${uuid.v4()}.${extension}`;
+  const photo = await jimp.read(req.file.buffer);
+  await photo.resize(500, jimp.AUTO);
+  await photo.write(`./public/uploads/${req.body.photo}`);
+  next();
 };
 
 exports.getEntryById = async (req, res, next) => {
