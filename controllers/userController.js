@@ -7,7 +7,7 @@ exports.loginForm = (req, res) => {
 };
 
 exports.registerForm = (req, res) => {
-  res.render('register', { title: 'Register'} );
+  res.render('register', { title: 'Register' } );
 };
 
 exports.createNewUser = (req, res, next) => {
@@ -21,20 +21,36 @@ exports.createNewUser = (req, res, next) => {
   });
   req.checkBody('password', 'Password cannot be blank.').notEmpty();
 
-  const errors = req.getValidationResult();
+  const errors = req.validationErrors();
+
   if (errors) {
     req.flash('error', errors.map(err => err.msg));
     res.render('register', { title: 'Register', body: req.body, flashes: req.flash() });
     return;
   }
-    next();
+  next();
+
+
+  // .then(function(result){
+  //   if (!result.isEmpty()) {
+  //     res.status(400).send('There are validation errors: ' + util.inspect(result.array()));
+  //     return;
+  //   } else {
+  //         res.redirect('/login');
+  //   }
+  // });
+
+  // if (errors) {
+  //   // req.flash('error', errors.map(err => err.msg));
+  //   req.session.error = errors;
+  // }
+  // res.redirect('/');
 };
 
 exports.register = async (req, res, next) => {
   const user = new User({ email: req.body.email, name: req.body.name });
-  const register = promisify(User.register, User);
-  await register(user, req.body.password);
-
+  const registerWithPromise = promisify(User.register, User);
+  await registerWithPromise(user, req.body.password);
   next();
 };
 

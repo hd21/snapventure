@@ -21,12 +21,13 @@ require('./handlers/passport');
 // creates express app
 const app = express();
 
-app.use(cookieParser());
 // Takes requests and enables them to be usable in req.body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(expressValidator());
 
+app.use(cookieParser());
 // Documenting requests with Morgan
 app.use(logger('dev'));
 
