@@ -8,7 +8,10 @@ const { findErrors } = require('../handlers/errorHandlers');
 
 router.get('/login', userController.loginForm);
 router.get('/register', userController.registerForm);
-router.post('/register', userController.createNewUser, userController.register, authController.login);
-router.get('/login', userController.login);
+router.post('/register', userController.validateRegistration, userController.register, authController.login);
+router.get('/login', userController.loginForm);
+router.post('/login', authController.login);
+
+router.get('/logout', authController.logout);
 
 module.exports = router;

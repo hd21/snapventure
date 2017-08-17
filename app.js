@@ -21,13 +21,6 @@ require('./handlers/passport');
 // creates express app
 const app = express();
 
-// Takes requests and enables them to be usable in req.body
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use(expressValidator());
-
-app.use(cookieParser());
 // Documenting requests with Morgan
 app.use(logger('dev'));
 
@@ -38,6 +31,14 @@ app.set('view engine', 'pug');
 // For icon
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Takes requests and enables them to be usable in req.body
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(expressValidator());
+
+app.use(cookieParser());
 
 app.use(session({
   secret: process.env.SECRET,
@@ -51,6 +52,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.flashes = req.flash();
+  res.locals.user = req.user || null;
+  res.locals.currentPath = req.path;
+  next();
+});
 
 app.use((req, res, next) => {
   req.login = promisify(req.login, req);
