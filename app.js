@@ -34,7 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Takes requests and enables them to be usable in req.body
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(expressValidator());
 

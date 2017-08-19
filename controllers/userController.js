@@ -3,7 +3,6 @@ const User = mongoose.model('User');
 const passport = require('passport');
 const promisify = require('es6-promisify');
 
-
 exports.loginForm = (req, res) => {
   res.render('login', { title: 'Login'} );
 };
@@ -24,7 +23,7 @@ exports.validateRegistration = (req, res, next) => {
 
   const errors = req.validationErrors();
     if (errors) {
-      req.flash('error', 'There are some errors!');
+      req.flash('error', errors.map(err => err.msg));
       res.render('register', { title: 'Registration', body: req.body, messages: req.flash('error') });
       return;
     }
@@ -35,5 +34,5 @@ exports.register = async (req, res, next) => {
   const user = new User({ email: req.body.email, name: req.body.name });
   const register = promisify(User.register, User);
   await register(user, req.body.password);
-  res.redirect('/entries');
+  next();
 };

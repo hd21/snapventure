@@ -3,11 +3,12 @@ const router = express.Router();
 
 const entryController = require('../controllers/entryController');
 const userController = require('../controllers/userController');
+const authController = require('../controllers/authController');
 
 const { findErrors } = require('../handlers/errorHandlers');
 
 router.get('/', entryController.home);
-router.get('/entries', entryController.dashboard);
+router.get('/entries', authController.userLoggedIn, entryController.dashboard);
 router.get('/entries/page/:page', findErrors(entryController.dashboard));
 
 router.get('/new', entryController.createEntry_get);
