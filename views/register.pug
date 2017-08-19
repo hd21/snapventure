@@ -11,4 +11,13 @@ block content
       label(for="password") Password
       input(type="password" name="password") 
       input(type="submit" value="Register")
-  p #{messages}
+
+block messages
+  -if (messages)
+    each message in messages
+      span= message
+        button.flash__remove(onClick="this.parentElement.remove()") &times;
+
+//- block messages
+//-     p #{messages}
+//-       button.flash__remove(onClick="this.parentElement.remove()") &times;
