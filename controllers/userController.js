@@ -24,7 +24,6 @@ exports.validateRegistration = (req, res, next) => {
   const errors = req.validationErrors();
     if (errors) {
       req.flash('error', errors.map(err => err.msg));
-      // res.render('register', { title: 'Registration', body: req.body, messages: req.flash('error') });
       res.render('register', { title: 'Registration', body: req.body, "messages": req.flash() });
       return;
     }
